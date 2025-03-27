@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Chat 🌍</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { 
+            background: linear-gradient(135deg, #1c92d2, #f2fcfe); 
+            text-align: center; 
+            transition: 0.5s; 
+            overflow: hidden; 
+        }
+
+        /* Login Page */
+        .login-container { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            animation: fadeIn 0.5s; 
+        }
+        .login-btn { 
+            background: #ff5733; 
+            color: white; 
+            padding: 15px 25px; 
+            font-size: 18px; 
+            border: none; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            transition: background 0.3s, transform 0.3s; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .login-btn:hover { 
+            background: #ff2e00; 
+            transform: scale(1.05); 
+        }
+
+        /* Chat Page */
+        .chat-container { 
+            width: 100vw; 
+            height: 100vh; 
+            background: white; 
+            display: none; 
+            flex-direction: column; 
+            animation: slideIn 0.5s forwards; 
+        }
+        .header { 
+            background: linear-gradient(to right, #ff4b1f, #ff9068); 
+            color: white; 
+            padding: 15px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        .profile-icon { 
+            width: 40px; 
+            height: 40px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            transition: transform 0.3s; 
+        }
+        .profile-icon:hover { 
+            transform: scale(1.1); 
+        }
+
+        /* Messages */
+        .messages { 
+            flex: 1; 
+            padding: 15px; 
+            overflow-y: auto; 
+            background: #f5f5f5; 
+            text-align: left; 
+            position: relative; 
+        }
+        .message { 
+            margin-bottom: 12px; 
+            padding: 10px; 
+            border-radius: 10px; 
+            background: #e1f5fe; 
+            animation: fadeIn 0.3s ease-in-out; 
+            position: relative; 
+            transition: background 0.3s; 
+        }
+        .message:hover { 
+            background: #b3e5fc; 
+        }
+        .message b { 
+            color: #0277bd; 
+        }
+
+        /* Input */
+        .input-container { 
+            display: flex; 
+            padding: 10px; 
+            background: #ddd; 
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .input-container input { 
+            flex: 1; 
+            padding: 10px; 
+            border: none; 
+            border-radius: 5px; 
+            transition: box-shadow 0.3s; 
+        }
+        .input-container input:focus { 
+            box-shadow: 0 0 5px rgba(255, 87, 51, 0.5); 
+            outline: none; 
+        }
+        .input-container button { 
+            background: #ff5733; 
+            color: white; 
+            border: none; 
+            padding: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: background 0.3s; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .input-container button:hover { 
+            background: #ff2 e00; 
+        }
+
+        /* Profile Page */
+        .profile-container { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.5); 
+            justify-content: center; 
+            align-items: center; 
+            animation: fadeIn 0.5s; 
+        }
+        .profile-box { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 15px; 
+            text-align: center; 
+            width: 300px; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .profile-box img { 
+            width: 80px; 
+            height: 80px; 
+            border-radius: 50%; 
+        }
+        .profile-box input { 
+            width: 100%; 
+            margin-top: 10px; 
+            padding: 8px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            transition: border 0.3s; 
+        }
+        .profile-box input:focus { 
+            border: 1px solid #ff5733; 
+            outline: none; 
+        }
+        .profile-box button { 
+            margin-top: 10px; 
+            padding: 8px 15px; 
+            background: #ff5733; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: background 0.3s; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .profile-box button:hover { 
+            background: #ff2e00; 
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Login Page -->
+    <div class="login-container" id="loginPage">
+        <h1>Welcome to World Chat 🌍</h1>
+        <button class="login-btn" onclick="googleLogin()">Login with Google</button>
+    </div>
+
+    <!-- Chat Page -->
+    <div class="chat-container" id="chatPage">
+        <div class="header">
+            <h2>World Chat</h2>
+            <img src="" id="profileIcon" class="profile-icon" onclick="openProfile()">
+        </div>
+        <div class="messages" id="messages"></div>
+        <div class="input-container">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div class="profile-container" id="profilePage">
+        <div class="profile-box">
+            <img src="" id="profilePic">
+            <h3 id="profileName"></h3>
+            <input type="text" id="bioInput" placeholder="Enter your bio...">
+            <button onclick="saveBio()">Save</button>
+            <button onclick="closeProfile()">Close</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDin7Muz-Swjm002H1K9pMAYPownYhAPEo",
+            authDomain: "world-chat-2f05e.firebaseapp.com",
+            projectId: "world-chat-2f05e",
+            databaseURL: "https://world-chat-2f05e-default-rtdb.asia-southeast1.firebasedatabase.app",
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        window.googleLogin = async function() {
+ try {
+                const result = await signInWithPopup(auth, provider);
+                localStorage.setItem("user", JSON.stringify(result.user));
+                location.reload();
+            } catch (error) {
+                console.error("Login Error:", error.message);
+            }
+        }
+
+        function loadChat() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user) return;
+            document.getElementById("loginPage").style.display = "none";
+            document.getElementById("chatPage").style.display = "flex";
+            document.getElementById("profileIcon").src = user.photoURL;
+        }
+
+        window.sendMessage = async function() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (!user) return;
+            const message = document.getElementById("messageInput").value;
+            if (message.trim() === "") return;
+
+            await addDoc(collection(db, "messages"), {
+                name: user.displayName,
+                photo: user.photoURL,
+                message: message,
+                timestamp: serverTimestamp()
+            });
+
+            document.getElementById("messageInput").value = "";
+        }
+
+        onSnapshot(collection(db, "messages"), (snapshot) => {
+            const messagesDiv = document.getElementById("messages");
+            messagesDiv.innerHTML = "";
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                messagesDiv.innerHTML += `<div class="message"><b>${data.name}:</b> ${data.message}</div>`;
+            });
+        });
+
+        window.openProfile = function() {
+            const user = JSON.parse(localStorage.getItem("user"));
+            document.getElementById("profilePic").src = user.photoURL;
+            document.getElementById("profileName").innerText = user.displayName;
+            document.getElementById("profilePage").style.display = "flex";
+        }
+
+        window.closeProfile = function() {
+            document.getElementById("profilePage").style.display = "none";
+        }
+
+        loadChat();
+    </script>
+
+</body>
+</html>
